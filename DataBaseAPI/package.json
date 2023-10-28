@@ -2,17 +2,20 @@
   "name": "databaseapi",
   "version": "1.0.0",
   "description": "API gerenciamento de dados de usuário e Jogos Nintendo",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "npm test"
   },
   "author": "Felipe Muros",
   "license": "ISC",
   "dependencies": {
-    "tsc": "^2.0.4"
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "tsc": "^2.0.4",
+    "typeorm": "^0.3.17"
   },
-  "devDependencies": {
-    "prisma": "^5.5.2"
+  "devDependencies": {    
+    "typescript": "^5.2.2"
   },
   "keywords": []
 }
