@@ -1,0 +1,18 @@
+{
+  "name": "databaseapi",
+  "version": "1.0.0",
+  "description": "API gerenciamento de dados de usuário e Jogos Nintendo",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Felipe Muros",
+  "license": "ISC",
+  "dependencies": {
+    "tsc": "^2.0.4"
+  },
+  "devDependencies": {
+    "prisma": "^5.5.2"
+  },
+  "keywords": []
+}

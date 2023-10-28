@@ -1,0 +1,43 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\MurosFC\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add tsc
+
+PATH: 
+  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\TDM-GCC-64\bin;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Docker\Docker\resources\bin;C:\Users\MurosFC\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\MurosFC\AppData\Local\Programs\Python\Python311\;C:\Users\MurosFC\AppData\Local\Microsoft\WindowsApps;C:\Users\MurosFC\AppData\Local\GitHubDesktop\bin;C:\Users\MurosFC\Programas\InteliJ\lib;C:\Users\MurosFC\Programas\PyCharm Community Edition 2023.1\bin;;C:\src\flutter\bin;;C:\Users\MurosFC\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\MurosFC\AppData\Roaming\npm;C:\Users\MurosFC\.dotnet\tools
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.16.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: unable to get local issuer certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1540:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:959:8)
+      at ssl.onhandshakedone (node:_tls_wrap:743:12)
+
+npm manifest: 
+  {
+    "name": "databaseapi",
+    "version": "1.0.0",
+    "description": "API gerenciamento de dados de usuário e Jogos Nintendo",
+    "main": "index.js",
+    "scripts": {
+      "test": "npm test"
+    },
+    "author": "Felipe Muros",
+    "license": "ISC",
+    "dependencies": {
+      "tsc": "^2.0.4"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
