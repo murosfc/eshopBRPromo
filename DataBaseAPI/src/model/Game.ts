@@ -1,9 +1,15 @@
+import { Entity, Column, PrimaryColumn } from "typeorm"
+
+@Entity()
 export class Game{
-    private _nsuid: string;   
-    private _title: string;    
-    private _mrsp: number;    
-    private _coverURL: string;
-    
+    @PrimaryColumn({ type: 'text' })
+    private _nsuid: string;
+    @Column({ type: 'text' })   
+    private _title: string; 
+    @Column({ type: 'float' })   
+    private _mrsp: number; 
+    @Column({ type: 'text' })   
+    private _coverURL: string;    
 
     constructor(nsuid: string, title: string, mrsp: number, coverURL: string){
         this._nsuid = nsuid;
