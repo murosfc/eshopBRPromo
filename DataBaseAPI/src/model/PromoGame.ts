@@ -1,12 +1,20 @@
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Game } from "./Game";
 
+@Entity()
 export class PromoGame{
-    private _id: number;    
-    private _game: Game;       
-    private _salePrice: number;    
+    @PrimaryGeneratedColumn()
+    private _id: number;
+    @OneToOne(() => Game)
+    @JoinColumn()    
+    private _game: Game; 
+    @Column({ type: 'float' })      
+    private _salePrice: number;   
+    @Column({ type: 'timestamp' }) 
     private _dueDate: Date;    
 
     constructor(game: Game, sale_price: number, due_date: Date){
+        this._id = 0;
         this._game = game;
         this._salePrice = sale_price;
         this._dueDate = due_date;
