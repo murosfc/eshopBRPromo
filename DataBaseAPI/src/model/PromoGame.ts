@@ -5,7 +5,7 @@ import { Game } from "./Game";
 export class PromoGame{
     @PrimaryGeneratedColumn()
     private _id: number;
-    @OneToOne(() => Game)
+    @OneToOne(() => Game, game => game.nsuid)
     @JoinColumn()    
     private _game: Game; 
     @Column({ type: 'float' })      

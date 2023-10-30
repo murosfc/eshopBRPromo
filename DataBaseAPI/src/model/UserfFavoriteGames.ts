@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 export class UserFavoriteGames{
     @PrimaryGeneratedColumn()
     private _id: number;
-    @OneToOne(() => Game)
+    @OneToOne(() => User, user => user.id)
     @JoinColumn()  
     private _user: User; 
     @OneToMany(() => Game, game => game.nsuid)
