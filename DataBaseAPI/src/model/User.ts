@@ -1,12 +1,23 @@
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity()
 export class User{
-    private _id: number;    
-    private _email: string;    
-    private _password: string;    
-    private _recKey: string;    
-    private _acessToken: string;    
+    @PrimaryGeneratedColumn()
+    private _id: number;
+    @Column({ type: 'text', unique: true })    
+    private _email: string;  
+    @Column({ type: 'text' })  
+    private _password: string;
+    @Column({ type: 'text' })    
+    private _recKey: string;  
+    @Column({ type: 'text', unique: true })  
+    private _acessToken: string;
+    @Column({ type: 'text', unique: true })      
     private _fcmToken: string;
-    private _createdOn: Date;    
-    private _updatedOn: Date | undefined;   
+    @Column({ type: 'timestamp' })
+    private _createdOn: Date; 
+    @Column({ type: 'timestamp', nullable: true })   
+    private _updatedOn?: Date;   
 
     constructor(email: string, password: string){
         this._id = 0;
