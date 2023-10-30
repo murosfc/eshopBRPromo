@@ -1,16 +1,23 @@
 import { User } from "./User";
 import { Game } from "./Game";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class UserFavoriteGames{
-    private _id: number;    
-    private _user: User;    
-    private _game: Game;    
+    @PrimaryGeneratedColumn()
+    private _id: number;
+    @OneToOne(() => Game)
+    @JoinColumn()  
+    private _user: User; 
+    @OneToMany(() => Game, game => game.nsuid)
+    private _games: Game[];   
+    @Column({ type: 'timestamp', nullable: true })    
     private _lastNotifiedPromoDueDate: Date | undefined; 
 
-    constructor(user: User, game: Game){
+    constructor(user: User){
         this._id = 0;
         this._user = user;
-        this._game = game;
+        this._games = [];
         this._lastNotifiedPromoDueDate = undefined;
     }
     
@@ -28,13 +35,13 @@ export class UserFavoriteGames{
         this._user = value;
     }
 
-    public get game(): Game {
-        return this._game;
+    public get games(): Game[] {
+        return this._games;
     }
-    public set game(value: Game) {
-        this._game = value;
+    public set games(value: Game[]) {
+        this._games = value;
     }
-
+    
     public get lastNotifiedPromoDueDate(): Date | undefined {
         return this._lastNotifiedPromoDueDate;
     }
