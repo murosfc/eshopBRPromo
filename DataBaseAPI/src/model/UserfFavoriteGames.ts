@@ -6,10 +6,11 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 export class UserFavoriteGames{
     @PrimaryGeneratedColumn()
     private _id: number;
-    @OneToOne(() => User, user => user.id)
-    @JoinColumn()  
-    private _user: User; 
+    @OneToOne(() => User)
+    @JoinColumn()    
+    private _user: User;  
     @OneToMany(() => Game, game => game.nsuid)
+    @JoinColumn()   
     private _games: Game[];   
     @Column({ type: 'timestamp', nullable: true })    
     private _lastNotifiedPromoDueDate: Date | undefined; 
@@ -17,7 +18,6 @@ export class UserFavoriteGames{
     constructor(user: User){
         this._id = 0;
         this._user = user;
-        this._games = [];
         this._lastNotifiedPromoDueDate = undefined;
     }
     
