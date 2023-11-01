@@ -1,7 +1,7 @@
 export interface DomainServiceInterface<T> {
-    save<T>(entity: T): Promise<T>;
-    update<T>(entity: T): Promise<T>;
-    delete<T>(entity: T): Promise<T>;
-    findById<T>(id: number): Promise<T>;
+    save<T>(entity: T): Promise<T> | Error;
+    update<T>(entity: T): Promise<T> | Error;
+    delete<T>(entity: T): Promise<boolean>;
+    findById<T>(id: number): Promise<T> | Error;
     findAll<T>(): Promise<T[]>;
 }
