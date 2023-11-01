@@ -1,2 +1,5 @@
 
 DataBaseAPI/src/index.ts
+DataBaseAPI/.env
+node_modules/
+
