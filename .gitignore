@@ -1,5 +1,6 @@
 
 DataBaseAPI/src/index.ts
 DataBaseAPI/.env
+DataBaseAPI/coverage/
 node_modules/
 
