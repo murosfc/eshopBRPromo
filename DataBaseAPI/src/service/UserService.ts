@@ -14,10 +14,10 @@ export class UserService implements UserServiceInterface {
     constructor(repository: Repository<User>) {
         this.repository = repository;
     }
-    
+
     async findByEmail(email: string): Promise<User | Error> {
         try {
-            const user = await this.repository.findOne({ where: { email: email } });            
+            const user = await this.repository.findOne({ where: { email: email } });
             return user ? user : new NotFoundException("User not found");
         } catch (error) {
             return error as Error;
@@ -63,7 +63,7 @@ export class UserService implements UserServiceInterface {
                 return new NotAllowedException("Password not match");
             } else {
                 user.acessToken = (await (this.gerarToken(user))).token;
-                return await Object.assign(user, this.repository.save(user));
+                return await this.repository.save(user);
             }
         } catch (error) {
             return error as Error;
@@ -72,37 +72,66 @@ export class UserService implements UserServiceInterface {
 
     async save(user: User): Promise<User | Error> {
         const saltRounds = 10;
-        const userValidated = await this.validateUser(user, true);
-        if (userValidated instanceof Error) {return userValidated};        
+        const userValidated = await this.validateUser(user);
+        if (userValidated instanceof Error) { return userValidated };
         try {
-            user.password = bcrypt.hashSync(user.password, saltRounds);            
-            return await this.repository.save(user);            
-        } catch (error) {            
+            user.password = bcrypt.hashSync(user.password, saltRounds);
+            const savedUser = await this.repository.save(user);
+            savedUser.password = "";        
+            return savedUser;
+        } catch (error) {
             return error as Error;
         }
     }
-    
-    update(entity: User): Promise<Error | User> {
-        throw new Error("Method not implemented.");
-    }
-    delete(entity: User): Promise<boolean> {
-        throw new Error("Method not implemented.");
-    }
-    findById(id: number): Promise<Error | User> {
-        throw new Error("Method not implemented.");
-    }
-    findAll(): Promise<User[]> {
-        throw new Error("Method not implemented.");
+
+    async update(user: User, token: string): Promise<Error | User> {        
+        const authUser = await this.findByToken(token);
+        if (authUser instanceof Error) { return authUser };
+        if (user.email !== authUser.email) {
+            authUser.email = user.email;
+            authUser.updatedOn = new Date();
+        };
+        if (user.password) {
+            const saltRounds = 10;
+            authUser.password = bcrypt.hashSync(user.password, saltRounds);
+            authUser.updatedOn = new Date();
+        }
+        try {
+            await this.repository.update(authUser.id, authUser);
+            authUser.password = "";
+            return authUser;
+        } catch (error) {
+            return error as Error;
+        }
     }
 
-    private async validateUser(user: User, save: boolean): Promise<User | Error>{
-        if (save){
-            if (user.id > 0) {return new NotAllowedException("User already exists")};
-            if (!user.email) {return new InvalidAttributeException("Email is required")};
-            if(await this.repository.findOne({ where: { email: user.email } })) {return new NotAllowedException("Email already exists")};
+    async delete(user: User, token: string): Promise<boolean> {
+        const authUser = await this.findByToken(token);
+        if (authUser instanceof Error) { return false };
+        try {
+            await this.repository.remove(authUser);
+            return true;
+        } catch (error) {
+            return false;
         }
-        if (!user.password) {return new InvalidAttributeException("Password is required")};
-        return user;        
+    }
+
+    async findById(id: number): Promise<Error | User> {
+        const user = await this.repository.findOneBy({ id: id });
+        if (!user) { return new NotFoundException("User not found") };
+        return user
+    }
+
+    async findAll(): Promise<User[]> {
+        return await this.repository.find();
+    }
+
+    private async validateUser(user: User): Promise<User | Error> {
+        if (user.id > 0) { return new NotAllowedException("User already exists") };
+        if (!user.email) { return new InvalidAttributeException("Email is required") };
+        if (await this.repository.findOne({ where: { email: user.email } })) { return new NotAllowedException("Email already exists") };
+        if (!user.password) { return new InvalidAttributeException("Password is required") };
+        return user;
     }
 
 
