@@ -2,8 +2,9 @@ import { describe } from "node:test";
 import { UserService } from "../UserService";
 import { User } from "../../model/User";
 import { TestAppDataSource } from "../../data-source";
-import { Repository } from "typeorm";
+import { Repository, UsingJoinColumnIsNotAllowedError } from "typeorm";
 import { InvalidAttributeException } from "../../error/InvalidAttributeException";
+import { NotAllowedException } from "../../error/NotAllowedException";
 
 describe("UserService", () => {
     var sut: UserService;
@@ -65,6 +66,41 @@ describe("UserService", () => {
         expect(savedUser.email).toEqual(updatedUser.email);       
     });
 
+    it("Should return Error type NotAllowedException when trying to update a user while untauthenticated", async () => {
+        var savedUser = await sut.save(new User("notw@spam.com", "12345")) as User;
+        savedUser.password = "SuperSecretPassword"; 
+        const authError = await sut.update(savedUser, "");
+        expect(authError).toBeInstanceOf(NotAllowedException);
+    });
+
+    it("Should delete a user", async () => {
+        const id = user.id;
+        const authUser = await sut.authenticate(user.email, rawUserPassword) as User;
+        const deleted = await sut.delete(id, authUser.acessToken);
+        expect(deleted).toBeTruthy();
+    });
+
+    it("should return false when trying to delete a user while untauthenticated and a different user", async () => {
+        var savedUser = await sut.save(new User("undelete@gmail.com", "12345")) as User;
+        savedUser = await sut.authenticate(savedUser.email, savedUser.password) as User;
+        var saveUser2 = await sut.save(new User("deletable@gmail.com", "12345")) as User;
+        saveUser2 = await sut.authenticate(saveUser2.email, saveUser2.password) as User;
+        var deleted = await sut.delete(saveUser2.id, savedUser.acessToken);
+        expect(deleted).toBeFalsy();
+        deleted = await sut.delete(saveUser2.id, "");
+        expect(deleted).toBeFalsy();
+    });
+
+    it("Should find a user by id", async () => {
+        const newUser = await sut.save(new User("newUser@hotmail.com", "12345")) as User;
+        const userById = await sut.findById(newUser.id);
+        expect(userById).toBeInstanceOf(User);
+    });
+
+    it("should get all users", async () => {
+        const users = await sut.findAll();
+        expect(users.length).toBeGreaterThan(0);
+    });
     
 })
 

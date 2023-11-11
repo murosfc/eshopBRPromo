@@ -27,7 +27,7 @@ export class UserService implements UserServiceInterface {
     async findByToken(token: string): Promise<User | Error> {
         try {
             const user = await this.repository.findOne({ where: { acessToken: token } });
-            return user ? user : new NotFoundException("User not found");
+            return user ? user : new NotAllowedException("Unauthorized access");
         } catch (error) {
             return error as Error;
         }
@@ -105,9 +105,9 @@ export class UserService implements UserServiceInterface {
         }
     }
 
-    async delete(user: User, token: string): Promise<boolean> {
-        const authUser = await this.findByToken(token);
-        if (authUser instanceof Error) { return false };
+    async delete(id: number, token: string): Promise<boolean> {
+        const authUser = await this.findByToken(token);        
+        if (authUser instanceof Error || authUser.id != id) { return false };
         try {
             await this.repository.remove(authUser);
             return true;
