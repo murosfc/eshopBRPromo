@@ -1,5 +1,7 @@
 import { Game } from "../../model/Game";
-import { DomainServiceInterface } from "./DomainServiceInterface";
 
-export interface GameServiceInterface extends DomainServiceInterface<Game> {     
+export interface GameServiceInterface{   
+    findAll(): Promise<Game[]>;
+    findById(nsuid: string): Promise<Game | Error>;
+    findByTitle(title: string): Promise<Game[]>;
 }
